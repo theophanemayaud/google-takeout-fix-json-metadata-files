@@ -67,7 +67,7 @@ print(f"    Corrected {nbUpdated} files")
 ## Therefore we scan for such, and check if truncated at 46 chargs we find
 ## the corresponding (and unique) json file !
 ## Re-scan the files
-print("\nWill now corrrect truncated json file names (when longer than 46 chars)")
+print("\nWill now corrrect truncated json file names (when longer than 46 chars):")
 files = []
 dirlist = [str(sys.argv[1])]
 while len(dirlist) > 0:
@@ -80,26 +80,18 @@ updateTooLong = 0
 for filePathNameExt in files:
     fileExt = '.' + filePathNameExt.rsplit('.',1)[-1]
     fileNameNoExt = filePathNameExt.rsplit('/',1)[-1].rsplit('.',1)[0]
-    print(fileNameNoExt)
-#    if fileExt=='.json':
-#        # check if corresponding .json file exists
-#        jsonFile = filePathNameExt + '.json'
-#        correspJsons = (jsonFile==files)
-#        if True not in correspJsons:
-#            noExtFileName = filePathNameExt.rsplit('.',1)[0]
-#            if noExtFileName.endswith("-modifié"):
-#                noModifiedFileName = noExtFileName.rsplit('-',1)[0]
-#                jsonToCopyLowExt = noModifiedFileName+fileExt.lower()+'.json'
-#                jsonToCopyUpExt = noModifiedFileName+fileExt.upper()+'.json'
-#                if jsonToCopyLowExt in files:
-#                    jsonDest = noModifiedFileName+"-modifié"+fileExt+'.json'
-#                    shutil.copy(jsonToCopyLowExt, jsonDest)
-#                    updatedModified+=1
-#                elif jsonToCopyUpExt in files:
-#                    jsonDest = noModifiedFileName+"-modifié"+fileExt+'.json'
-#                    shutil.copy(jsonToCopyUpExt, jsonDest)
-#                    updatedModified+=1
-##                    print(f"Fixed -modifié for {filePathNameExt}")
+    filePathNameNoJson = filePathNameExt.rsplit('.',1)[0]
+
+    if fileExt=='.json' and len(fileNameNoExt)==46:
+        # if media already exists, it means there is no error
+        if sum(filePathNameNoJson==file for file in files)==0:
+            possibleIds = np.array(list(fileNameNoExt in file for file in files), dtype='bool')
+            possibleFiles = files[possibleIds]
+            possibleFiles = possibleFiles[np.array(list('.json' not in file for file in possibleFiles), dtype='bool')]
+            if possibleFiles.size==1:
+                os.rename(filePathNameExt, possibleFiles[0] + '.json')
+    #            print(possibleFiles)
+                updateTooLong+=1
                 
 print(f"    Fixed {updateTooLong} file(s) for such error")
 
