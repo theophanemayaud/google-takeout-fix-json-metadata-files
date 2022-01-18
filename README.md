@@ -26,6 +26,12 @@ This '-modifié' is placed before type extension, which is a duplicate of the or
 
 NB maybe if your google account is in English, change it to -modified ... ?
 
+## Errors not yet adressed by the script
+
+### Live photos
+
+Live photos are treated by takeout as an image file, a video file, and a json metadata file for the photo only. Notice there is not one json file for each of both image and video files, so all the videos are missing json files !
+
 ## Recommendations for using exiftool to then merge .json and media files
 
 ### Merge for all files
