@@ -28,11 +28,12 @@ if numbArgs!=2:
 
 # scan files
 files = []
-dirlist = [str(sys.argv[1])]
-while len(dirlist) > 0:
-    for (dirpath, dirnames, filenames) in os.walk(dirlist.pop()):
-        dirlist.extend(dirnames)
-        files.extend(map(lambda n: os.path.join(*n), zip([dirpath] * len(filenames), filenames)))
+for (dirpath, dirnames, filenames) in os.walk(str(sys.argv[1])):
+    for filename in filenames:
+        filePathName = os.path.join(os.path.abspath(dirpath), filename)
+        files.append(filePathName)
+files = np.array(files)
+print(f"\nFound {len(files)} files")
 
 # First Handle wrongly named numbered files ex :
 ##.jpeg(1).json ->  (1).jpeg.json
@@ -69,11 +70,10 @@ print(f"    Corrected {nbUpdated} files")
 ## Re-scan the files
 print("\nWill now corrrect truncated json file names (when longer than 46 chars):")
 files = []
-dirlist = [str(sys.argv[1])]
-while len(dirlist) > 0:
-    for (dirpath, dirnames, filenames) in os.walk(dirlist.pop()):
-        dirlist.extend(dirnames)
-        files.extend(map(lambda n: os.path.join(*n), zip([dirpath] * len(filenames), filenames)))
+for (dirpath, dirnames, filenames) in os.walk(str(sys.argv[1])):
+    for filename in filenames:
+        filePathName = os.path.join(os.path.abspath(dirpath), filename)
+        files.append(filePathName)
 files = np.array(files)
 
 updateTooLong = 0
@@ -101,11 +101,10 @@ print(f"\nSome files end with '-modifié' before type extension, which is a dupl
 
 ## Re-scan the files
 files = []
-dirlist = [str(sys.argv[1])]
-while len(dirlist) > 0:
-    for (dirpath, dirnames, filenames) in os.walk(dirlist.pop()):
-        dirlist.extend(dirnames)
-        files.extend(map(lambda n: os.path.join(*n), zip([dirpath] * len(filenames), filenames)))
+for (dirpath, dirnames, filenames) in os.walk(str(sys.argv[1])):
+    for filename in filenames:
+        filePathName = os.path.join(os.path.abspath(dirpath), filename)
+        files.append(filePathName)
 files = np.array(files)
 
 updatedModified = 0
@@ -139,11 +138,10 @@ print(f"    Fixed {updatedModified} file(s) for such error")
 print(f"\nWill now check remaining files that still don't match to a json metadata file\nWill check for following media files only: {fullExtensions}")
 ## Re-scan the files
 files = []
-dirlist = [str(sys.argv[1])]
-while len(dirlist) > 0:
-    for (dirpath, dirnames, filenames) in os.walk(dirlist.pop()):
-        dirlist.extend(dirnames)
-        files.extend(map(lambda n: os.path.join(*n), zip([dirpath] * len(filenames), filenames)))
+for (dirpath, dirnames, filenames) in os.walk(str(sys.argv[1])):
+    for filename in filenames:
+        filePathName = os.path.join(os.path.abspath(dirpath), filename)
+        files.append(filePathName)
 files = np.array(files)
 
 noMatch=0
@@ -159,8 +157,8 @@ for filePathNameExt in files:
         if True not in correspJsons:
             noMatch+=1
             noMatchFiles.append(filePathNameExt)
-            print(f"Can't find corresponding .json for file={filePathNameExt}")
+            print(f"No .json for: {filePathNameExt}")
 #        print(filePathNameExt)
 
-print(f"\n    Couldn't find such a match for {noMatch} element(s).")
+print(f"\n    Couldn't find .json for {noMatch} element(s).")
 #    if ').json' in filePathNameExt:
