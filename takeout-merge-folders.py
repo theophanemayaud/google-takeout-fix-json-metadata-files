@@ -49,6 +49,8 @@ print(f"\nFound {len(files)} files")
 nbUpdated = 0
 nbErrors = 0
 for filePathNameExt in files:
+    if ".DS_Store" in filePathNameExt:
+        continue
 #    print("\n"+ filePathNameExt)
     if "/Google Photos/" in filePathNameExt:
         pathElements = filePathNameExt.split('/')
