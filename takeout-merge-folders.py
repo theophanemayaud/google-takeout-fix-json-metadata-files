@@ -10,7 +10,6 @@
 
 import sys
 import os
-import shutil
 import numpy as np
 
 # check input arguments (folder to scan)
@@ -51,15 +50,15 @@ nbErrors = 0
 for filePathNameExt in files:
     if ".DS_Store" in filePathNameExt:
         continue
-#    print("\n"+ filePathNameExt)
-    if "/Google Photos/" in filePathNameExt:
+    
+    if "/Google Photos/" in filePathNameExt:
         pathElements = filePathNameExt.split('/')
         pathAfterGPhotos = ""
         for pathElem in pathElements:
             if len(pathAfterGPhotos)>0:
                  pathAfterGPhotos = os.path.join(pathAfterGPhotos, pathElem)
 #                pathAfterGPhotos = pathAfterGPhotos + "/" + pathElem
-            elif pathElem=="Google Photos":
+            elif pathElem=="Google Photos":
                 pathAfterGPhotos = "/"
         destFile = destDir + pathAfterGPhotos
 
@@ -74,9 +73,11 @@ for filePathNameExt in files:
                   f"        {str(destFile)}")
         else:
             try:
+                nbUpdated+=1;
                 os.rename(filePathNameExt, destFile)
             except:
                 nbErrors+=1
+                nbUpdated-=1;
                 print(f"    Unknown error moving file from/to\n"\
                       f"        {str(filePathNameExt)}\n"\
                       f"        {str(destFile)}")
