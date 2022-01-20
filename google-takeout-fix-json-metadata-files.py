@@ -13,7 +13,7 @@ import numpy as np
 
 # define extensions that are used
 extensions = [".jpg", ".jpeg", ".png", ".gif", ".heic",
-              ".mpeg", ".mov", ".mp4", ".m4v"]
+              ".mpeg", ".mov", ".mp4", ".m4v", ".mpg"]
 fullExtensions = extensions.copy()
 for ext in extensions:
     fullExtensions.append(ext.upper())
@@ -150,19 +150,17 @@ files = np.array(files)
 
 noMatch=0
 noMatchFiles = []
-for filePathNameExt in files:
+lowCaseFiles = np.char.lower(files) # here we don't really care if it's exact and perfect per case, only that each has a json
+for filePathNameExt in lowCaseFiles:
     fileExt = '.' + filePathNameExt.rsplit('.',1)[-1]
     if any(fileExt==ext for ext in extensions):
         # check if corresponding .json file exists
         jsonFile = filePathNameExt + '.json'
-        correspJsons = (jsonFile==files)
-#        print(correspJsons)
-#        print(jsonFile==files)
+        correspJsons = (np.char.lower(jsonFile)==lowCaseFiles)
         if True not in correspJsons:
             noMatch+=1
             noMatchFiles.append(filePathNameExt)
             print(f"No .json for: {filePathNameExt}")
-#        print(filePathNameExt)
 
 print(f"\n    Couldn't find .json for {noMatch} element(s).")
 #    if ').json' in filePathNameExt:
