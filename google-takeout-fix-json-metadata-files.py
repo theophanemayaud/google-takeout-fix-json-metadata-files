@@ -55,7 +55,7 @@ for filePathNameExt in files:
         fileTypeExtension = splitted[1].split('(',1)[0]
         numberInParenth = int(splitted[1].split('(',1)[1].split(')',1)[0])
         correctedName = partBeforeExtensions + '(' + str(numberInParenth) + ').' + fileTypeExtension + '.json'
-        
+
         try:
             os.rename(filePathNameExt, correctedName)
             nbUpdated+=1
@@ -94,7 +94,7 @@ for filePathNameExt in files:
                 os.rename(filePathNameExt, possibleFiles[0] + '.json')
     #            print(possibleFiles)
                 updateTooLong+=1
-                
+
 print(f"    Fixed {updateTooLong} file(s) for such error")
 
 
@@ -107,7 +107,7 @@ for (dirpath, dirnames, filenames) in os.walk(str(sys.argv[1])):
     for filename in filenames:
         filePathName = os.path.join(os.path.abspath(dirpath), filename)
         files.append(filePathName)
-files = np.array(files)
+files = set(files)
 
 updatedModified = 0
 
@@ -118,8 +118,7 @@ for filePathNameExt in files:
     if any(fileExt==ext for ext in extensions):
         # check if corresponding .json file exists
         jsonFile = filePathNameExt + '.json'
-        correspJsons = (jsonFile==files)
-        if True not in correspJsons:
+        if jsonFile not in files:
             noExtFileName = filePathNameExt.rsplit('.',1)[0]
             if noExtFileName.endswith("-modifié"):
                 noModifiedFileName = noExtFileName.rsplit('-',1)[0]
@@ -134,7 +133,7 @@ for filePathNameExt in files:
                     shutil.copy(jsonToCopyUpExt, jsonDest)
                     updatedModified+=1
 #                    print(f"Fixed -modifié for {filePathNameExt}")
-                
+
 print(f"    Fixed {updatedModified} file(s) for such error")
 
 
@@ -149,17 +148,16 @@ for (dirpath, dirnames, filenames) in os.walk(str(sys.argv[1])):
 files = np.array(files)
 
 noMatch=0
-noMatchFiles = []
 lowCaseFiles = np.char.lower(files) # here we don't really care if it's exact and perfect per case, only that each has a json
+onlyJsons = set([file for file in lowCaseFiles if file.endswith(".json")]) # save time for each run no need to check agains all !
 for filePathNameExt in lowCaseFiles:
     fileExt = '.' + filePathNameExt.rsplit('.',1)[-1]
     if any(fileExt==ext for ext in extensions):
         # check if corresponding .json file exists
         jsonFile = filePathNameExt + '.json'
-        correspJsons = (np.char.lower(jsonFile)==lowCaseFiles)
-        if True not in correspJsons:
+#        correspJsons = (np.char.lower(jsonFile)==onlyJsons)
+        if jsonFile not in onlyJsons:
             noMatch+=1
-            noMatchFiles.append(filePathNameExt)
             print(f"No .json for: {filePathNameExt}")
 
 print(f"\n    Couldn't find .json for {noMatch} element(s).")
