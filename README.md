@@ -1,6 +1,19 @@
 # google-takeout-fix-json-metadata-files
 When you use google takeout to download your Google Photos library, the .json files can get messy. This python script performs a first scan through the downloaded files, and fixes as many as possible. 
 
+
+## Small sub script to merge all archives into one
+
+> takeout-merge-folders.py
+
+Use this freely, you have to extract all your google takeout archives in the same folder, and within each extracted folder you should have a `Google Photos` subfolder. This script will merget all these sub `Google Photos` folder into one `Google Photos Takeout Merged` folder in the destination of your choice. You can run it with :
+
+- first argument: source directory where all archives were extracted. It should contain folders multiple folders with inside a Google Photos folder
+
+- second argument: destination directory, where a
+           `Google Photos Takeout Merged` folder will be put, and all original files moved to it if no error.
+
+
 ## Some example problems that are adressed by the script :
 
 ### Wrongly named numbered files ex :
