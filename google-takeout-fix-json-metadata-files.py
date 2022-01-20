@@ -50,6 +50,8 @@ for filePathNameExt in files:
     if ').json' in filePathNameExt:
         splitted = filePathNameExt.rsplit('.', 2)
         partBeforeExtensions = splitted[0]
+        if splitted[1]=='json': # sometimes .json doesn't have other extension...
+            continue
         fileTypeExtension = splitted[1].split('(',1)[0]
         numberInParenth = int(splitted[1].split('(',1)[1].split(')',1)[0])
         correctedName = partBeforeExtensions + '(' + str(numberInParenth) + ').' + fileTypeExtension + '.json'
