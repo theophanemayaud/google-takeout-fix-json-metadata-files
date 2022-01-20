@@ -113,6 +113,8 @@ updatedModified = 0
 
 for filePathNameExt in files:
     fileExt = '.' + filePathNameExt.rsplit('.',1)[-1]
+    if not "-modifié" in filePathNameExt: # pre-skip this file to save a lot of time
+        continue
     if any(fileExt==ext for ext in extensions):
         # check if corresponding .json file exists
         jsonFile = filePathNameExt + '.json'
