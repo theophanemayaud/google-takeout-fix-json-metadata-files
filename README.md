@@ -60,7 +60,7 @@ exiftool -r -d %s -TagsFromFile %d%F.json '-filemodifydate<$PhotoTakenTimeTimest
 For videos only add the specific tag (quicktime) that apple photo reads for creation time and GPS coordinates (but they can be in the same folder as photos because it only deals with the .mp4 .avi and .mkv extensions), Apple photos then recognizes the position:
 
 `
-exiftool -r -d %s -TagsFromFile "%d%F.json" -ext mp4 -ext avi -ext mkv -ext mov -ext mpg -ext m4v -ext webm -ext mpg -ext wmv '-filemodifydate<$PhotoTakenTimeTimestamp' '-filecreatedate<$PhotoTakenTimeTimestamp' '-QuickTime:CreateDate<PhotoTakenTimeTimestamp' '-QuickTime:GPSCoordinates#<$geoDatalatitude $geoDatalongitude $geoDataaltitude' '-Keys:GPSCoordinates#<$geoDatalatitude $geoDatalongitude $geoDataaltitude' -overwrite_original_in_place ./
+exiftool -r -d %s -TagsFromFile "%d%F.json" -ext mp4 -ext avi -ext mkv -ext mov -ext mpg -ext m4v -ext webm -ext mpeg -ext wmv '-filemodifydate<$PhotoTakenTimeTimestamp' '-filecreatedate<$PhotoTakenTimeTimestamp' '-QuickTime:CreateDate<PhotoTakenTimeTimestamp' '-QuickTime:GPSCoordinates#<$geoDatalatitude $geoDatalongitude $geoDataaltitude' '-Keys:GPSCoordinates#<$geoDatalatitude $geoDatalongitude $geoDataaltitude' -overwrite_original_in_place ./
 `
 
 
